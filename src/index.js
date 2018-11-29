@@ -3,12 +3,13 @@ import React from 'react';
 import {render} from "react-dom";
 import {createStore, combineReducers, applyMiddleware} from "redux";
 import logger from "redux-logger";
-import {App} from "./app/components/App";
+import App from "./app/container/App";
+import {Provider} from "react-redux"
 
 
 
 const userReducer = (state = {
-    name : "Charles",
+    name : "Charlot",
      age : 40
 },action) => {
     // eslint-disable-next-line default-case
@@ -61,7 +62,7 @@ const myLogger = (store) => (next) => (action)=> {
 }
 
  const store = createStore(
-     combineReducers({mathReducer,userReducer}),
+     combineReducers({math: mathReducer,user: userReducer}),
     {},
     applyMiddleware(logger)
     );
@@ -70,32 +71,8 @@ const myLogger = (store) => (next) => (action)=> {
      //console.log("Store updated !!!", store.getState());
  })
 
- store.dispatch({
-     type: "ADD",
-     payload: 100
- });
-
- store.dispatch({
-    type: "ADD",
-    payload: 22
-});
-
-store.dispatch({
-    type: "SUBTRACT",
-    payload: 23
-});
-
-store.dispatch({
-    type:"SET_NAME",
-    payload: "Goodman"
-});
-store.dispatch({
-    type:"SET_AGE",
-    payload: 30
-});
-
-
-
 render(
-    <App />, 
+    <Provider store ={store}>
+        <App />
+    </Provider>, 
         document.getElementById('root'));
